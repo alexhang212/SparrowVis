@@ -74,6 +74,6 @@ FemaleSum <- aggregate(Female$Time.dec, by=list(Female$EventNum, Female$Events),
 FemaleSum$Sex <- "F"
 
 Sumdata <- rbind(MaleSum,FemaleSum)
-write.csv(Sumdata,"VT0115_S1_VP7_20190607_MeerkatManualSummary.csv")
+write.csv(Sumdata,"../Data/VT0115_S1_VP7_20190607_MeerkatManualSummary.csv")
 
 
