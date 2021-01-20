@@ -194,8 +194,8 @@ dist <- vegdist(biomass)
 pcoa <- cmdscale(dist, eig=TRUE)
 barplot(pcoa$eig)
 
-plot(pcoa$points[,1:2], xlab="PCoA1", ylab="PCoA2")
 plot(pcoa$points[,1:2], type="n", xlab="PCoA1", ylab="PCoA2")
-text(pcoa$points[,1:2]+.25, labels=env[,1], col="red")
-text(pcoa$points[,1:2]-.25, labels=env[,2], col="black")
+plot(pcoa$points[,1:2], xlab="PCoA1", ylab="PCoA2")
+text(pcoa$points[,1:2]+0.025, labels=env[,1], col="red")
+text(pcoa$points[,1:2]-0.025, labels=env[,2], col="black")
 
