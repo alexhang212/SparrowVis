@@ -1,3 +1,4 @@
+#Compares DVDinfo from database and files I have
 rm(list=ls())
 
 setwd("C:/Documents and Settings/Alex Chan/Documents/SparrowVis/Code/")
@@ -66,8 +67,39 @@ unique(DVDinfoNew$Type)
 
 
 
-#####Extracting file names from hard disk#####
+#####2. Extracting file names from hard disk and compare#####
+rm(list=ls())
+library(stringi)
+setwd("C:/Documents and Settings/Alex Chan/Documents/SparrowVis/Code/")
+DVDinfoNew <- read.csv("../Data/DVDinfo_Updated.csv")
+
+#reading in all the files available in hard disk, compare with database 
+DiskFile <- read.csv("../Data/HardDiskFile.csv")
+FileVect <- DiskFile$Files
+
+#checking if videos exist using regex
+Exist <- c(rep(NA,times=nrow(DVDinfoNew)))
+NumFile <- c(rep(NA,times=nrow(DVDinfoNew)))
+
+for(i in 1:nrow(DVDinfoNew)){
+  VidCode <- DVDinfoNew$DVDNumber[i]
+  #regular expression to search for file:
+  FilesDetected <- sum(stri_detect_regex(FileVect, VidCode)) 
+  if(FilesDetected>0){
+    Exist[i] <- "Yes"
+    NumFile[i] <-FilesDetected #number of that file
+  }else{Exist[i] <- "No"}
+  
+}
+
+
+DVDinfoNew$In_Hard_Disk <- Exist
+DVDinfoNew$Number_of_files <- NumFile
+
+
 ##making list by year subset
+DVDinfoNew$TypeDay <- paste(DVDinfoNew$TypeOfCare, DVDinfoNew$Age) #check type (prov/inc) and days after
+
 Years <- na.omit(unique(DVDinfoNew$Year))
 Yearsublist <- vector(mode="list", length=length(Years)) #preallocate list for year subsets
 
@@ -75,9 +107,21 @@ for(i in 1:length(Years)){
   Yearsublist[[i]] <- subset(DVDinfoNew, DVDinfoNew$Year==Years[i])
 }
 
+#summary:
+names(Yearsublist)<- as.character(na.omit(unique(DVDinfoNew$Year)))
+lapply(Yearsublist, function(x) {table(x$In_Hard_Disk)}) #summary table for each year
+lapply(Yearsublist, function(x) {table(x$TypeDay)}) #summary of type of videos we have and day
 
-#reading in all the files available in hard disk, compare with database
-setwd("D:/Provision Videos/") #Set working directory to hard drive
-rm(list=ls())
-list.files()
+#for 2015 +2016
+Data2016 <- Yearsublist$`2016`
+Prov2016 <- subset(Data2016,Data2016$TypeOfCare=="Prov")
+table(Prov2016$In_Hard_Disk)
+Inc2016 <- subset(Data2016,Data2016$TypeOfCare=="Inc")
+table(Inc2016$In_Hard_Disk)
+
+Data2015 <- Yearsublist$`2015`
+Prov2015 <- subset(Data2015,Data2015$TypeOfCare=="Prov")
+table(Prov2015$In_Hard_Disk)
+Inc2016 <- subset(Data2015,Data2015$TypeOfCare=="Inc")
+table(Inc2016$In_Hard_Disk)
 
