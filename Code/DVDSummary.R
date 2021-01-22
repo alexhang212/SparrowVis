@@ -77,6 +77,10 @@ DVDinfoNew <- read.csv("../Data/DVDinfo_Updated.csv")
 DiskFile <- read.csv("../Data/HardDiskFile.csv")
 FileVect <- DiskFile$Files
 
+#removing excel files:
+FileVect <- FileVect[-which(endsWith(FileVect, "xls"))]
+FileVect <- FileVect[-which(endsWith(FileVect, "xlsx"))]
+
 #checking if videos exist using regex
 Exist <- c(rep(NA,times=nrow(DVDinfoNew)))
 NumFile <- c(rep(NA,times=nrow(DVDinfoNew)))
