@@ -80,10 +80,10 @@ exp <- raw.data$train$x
 lookup <- c("T-shirt/top", "Trouser", "Pullover", "Dress",
             "Coat", "Sandal", "Shirt", "Sneaker", "Bag", "Ankle boot")
 exp <- exp/255
-pdf("../Results/images.pdf")
+# pdf("../Results/images.pdf")
 par(mfrow=c(5,5))
 for(i in seq_len(5*5)) image(t(exp[i,28:1,]),main=lookup[resp[i]+1], col=grey.colors(255))
-dev.off()
+# dev.off()
 
 model <- keras_model_sequential()
 model %>% layer_flatten(input_shape=c(28,28)) %>%
