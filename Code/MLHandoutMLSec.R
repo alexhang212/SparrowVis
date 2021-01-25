@@ -98,5 +98,131 @@ model %>% compile(
 )
 
 model %>% fit(x=exp,y=resp,epochs=5)
+test.resp <- raw.data$test$y
+test.exp <- raw.data$test$x
+test.exp <- test.exp/255
+
+model %>% evaluate(test.exp,test.resp)
+predictions <-model %>% predict(test.exp)
+table(apply(predictions,1,which.max)-1,test.resp)
+
+
+#Convoluted network:
+conv <- keras_model_sequential()%>%
+  layer_conv_2d(filters=20, kernel_size=c(3,3), activation='relu',
+                input_shape = c(28,28,1)) %>%
+  layer_max_pooling_2d(pool_size=c(2,2))%>%
+  #layer_dropout(rate=0.25)%>%
+  layer_flatten() %>%
+  layer_dense(units=20, activation='relu')%>%
+  layer_dense(units=10, activation='softmax')%>%
+  compile(optimizer='adam',
+          loss='sparse_categorical_crossentropy',
+          metrics=c('accuracy'))
+  
+array.exp <- array(exp, dim=c(dim(exp),1))
+conv %>% fit(array.exp,resp,epochs=10)
+
+#run in smaller subset:
+subset.exp <- array.exp[1:500,,,]
+s.array.exp <- array(subset.exp, dim=c(dim(subset.exp),1))
+conv %>% fit(array.exp,resp,epochs=10)
+
+#validate model:
+test.resp <- array(raw.data$test$y, dim=c(dim(raw.data$test$y),1))
+test.exp <- array(raw.data$test$x, dim=c(dim(raw.data$test$x),1))
+test.exp <- test.exp/255
+
+conv %>% evaluate(test.exp,test.resp)
+predictions <-conv %>% predict(test.exp)
+table(apply(predictions,1,which.max)-1,test.resp)
+
+#freezing networks
+#can continue training networks
+new <- keras_model_sequential() %>%
+  conv%>% #previous model
+  layer_dense(units=10, activation = "softmax")%>%
+  compile(optimizer = 'adam', loss="sparse_categorical_crossentropy", 
+          metrics=c('accuracy'))
+new %>% fit(s.array.exp, resp[1:500], epochs=10)
+
+#freeze layers
+freeze_weights(conv)
+freeze_weights(conv, from="dense_8")
+
+new %>% compile(
+  optimizer = 'adam',
+  loss = 'sparse_categorical_crossentropy',
+  metrics = c('accuracy')
+)
+new %>% fit(s.array.exp, resp[1:500], epochs=10)
+
+unfreeze_weights(conv)
+
+#add augementation/ variation to data
+for(i in 1:20){
+  augmented <- array.exp + rnorm(length(as.numeric(exp)),sd=0.1)
+  conv %>% fit(augmented, resp, epoch=1)
+}
+
+test.resp <- array(raw.data$test$y, dim=c(dim(raw.data$test$y),1))
+test.exp <- array(raw.data$test$x, dim=c(dim(raw.data$test$x),1))
+test.exp <- test.exp/255
+
+conv %>% evaluate(test.exp,test.resp)
+predictions <-conv %>% predict(test.exp)
+table(apply(predictions,1,which.max)-1,test.resp)
+lookup
+
+
+
+##Excercise##
+mnist <- dataset_mnist()
+x_train <- mnist$train$x
+y_train <- mnist$train$y
+x_test <- mnist$test$x
+y_test <- mnist$test$y
+
+
+#flat neural network:
+flat <- keras_model_sequential()
+flat %>% layer_flatten(input_shape = c(28,28)) %>%
+  layer_dense(units=128, activation='relu')%>%
+  layer_dropout(rate=0.5) %>%
+  layer_dense(units=10, activation = 'softmax') %>%
+  compile(optimizer='adam',
+          loss='sparse_categorical_crossentropy', 
+          metrics= c('accuracy'))
+
+x_train <- x_train/255
+flat %>% fit(x_train, y_train, epochs=10)
+x_test <- x_test/255
+
+flat %>% evaluate(x_test,y_test) # 97.63% accuracy
+predictions <- flat %>% predict(x_test)
+table(apply(predictions,1,which.max)-1, y_test)
+
+
+##CNN##
+CNN <- keras_model_sequential()
+  CNN %>% layer_conv_2d(filters=20, kernel_size=c(3,3), activation='relu',
+                input_shape = c(28,28,1)) %>%
+  layer_max_pooling_2d(pool_size = c(2,2))%>%
+  #layer_dropout(rate=0.25)%>%
+  layer_flatten()%>%
+  layer_dense(units=20,activation='relu')%>%
+  layer_dense(units=10, activation='softmax')%>%
+  compile(optimizer='adam',
+          loss='sparse_categorical_crossentropy',
+          metrics=c('accuracy'))
+  
+array_x_train <- array(x_train, c(dim(x_train),1))
+array_x_test <- array(x_test, c(dim(x_test),1))
+
+CNN %>% fit(array_x_train, y_train, epochs=10)
+
+CNN %>% evaluate(array_x_test,y_test)#98.63% accuracy, 99.39% accuracy without dropout
+predictions <- CNN %>% predict(array_x_test)
+table(apply(predictions,1,which.max)-1,y_test)
 
 
