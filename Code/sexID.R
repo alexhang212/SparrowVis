@@ -1,7 +1,7 @@
 #Building CNN to identify sexes
 rm(list=ls())
 library(imager)
-set.seed(123)
+set.seed(1)
 
 imagescale <- 4
 
@@ -52,7 +52,7 @@ training_y <- ImageID[trainingIndex]
 test_x <- ImageVal[-trainingIndex,,,]
 test_y <- ImageID[-trainingIndex]
 
-CNN %>% fit(training_x,training_y, epochs = 20)
+CNN %>% fit(training_x,training_y, epochs = 100)
 
 CNN %>% evaluate(test_x,test_y)
 predictions <- predict(CNN,test_x)
