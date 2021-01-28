@@ -1,0 +1,24 @@
+input,C:\Users\Alex Chan\Documents\Masters\Project\Videos\VO0068_VP11_F3_20150525.MP4
+draw_size,enter
+size,0.01
+tensorflow_threshold,0.95
+moglearning,0.1
+mogvariance,60
+crop,False
+draw_box,False
+show,False
+threaded,False
+tensorflow,True
+write_text,False
+training,False
+output_video,False
+resize,False
+path_to_model,C:/Program Files/DeepMeerkat/model/
+output,C:\Users\Alex Chan\DeepMeerkat
+path_to_ffmpeg,C:\Program Files\DeepMeerkat\FFmpeg\ffmpeg.exe
+video,C:\Users\Alex Chan\Documents\Masters\Project\Videos\VO0068_VP11_F3_20150525.MP4
+Minutes,77.33244149287542
+Total Frames,135768
+Motion Events,775
+Return rate,0.005708267043780567
+Frame processing rate,29.26
