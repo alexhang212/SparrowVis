@@ -6,12 +6,13 @@ library(plyr)
 set.seed(1)
 
 imagescale <- 4
+FileName <- "VT0115_S1_VP7_20190607"
 
 #####Reading in Data#####
 
 ###Reading in new files:###
-newdata <- read.csv("../Data/Frames/VT0139_S1_VP11_20190611/VT0139_S1_VP11_20190611_MeerkatManual.csv")
-newdata$FileName <- "VT0139_S1_VP11_20190611"
+newdata <- read.csv(paste("../Data/Frames/",FileName,"/",FileName,"_MeerkatManual.csv", sep=""))
+newdata$FileName <- FileName
 
 data <- rbind.fill(newdata,data)
 
@@ -66,14 +67,14 @@ training_y <- ImageID[trainingIndex]
 test_x <- ImageVal[-trainingIndex,,,]
 test_y <- ImageID[-trainingIndex]
 
-CNN %>% fit(training_x,training_y, epochs = 50)
+CNN %>% fit(training_x,training_y, epochs = 75)
 
 CNN %>% evaluate(test_x,test_y)
 predictions <- predict(CNN,test_x)
 table(apply(predictions,1,which.max), test_y)
 
 #save model
-CNN %>% save_model_tf("../Data/CNN2_78")
+CNN %>% save_model_hdf5("../Data/Models/CNN2_100eq")
 
 
 #for all frames:
@@ -84,10 +85,12 @@ table(apply(predictions,1,which.max), ImageID)
 
 ##### Retrain CNN#####
 #Fitting existing model
-CNN2_90 <- load_model_tf("../Data/Models/CNN2_90//", compile=T)
-# CNN2_90 %>% evaluate(ImageVal,ImageID)
-# predictions <- predict(CNN2_90,ImageVal)
-# table(apply(predictions,1,which.max), ImageID)
+testCNN <- load_model_hdf5("../Data/Models/CNN2_100eq")
+testCNN %>% evaluate(ImageVal,ImageID)
+predictions <- predict(testCNN,ImageVal)
+table(apply(predictions,1,which.max), ImageID)
+
+
 
 #Setting up training data
 trainingIndex <- sample(nrow(data),nrow(data)/2)
@@ -99,16 +102,70 @@ test_y <- ImageID[-trainingIndex]
 
 # Retraining model:
 newCNN <- keras_model_sequential()%>%
-  CNN1_84()%>%
+  CNN1_85()%>%
   compile(optimizer='adam',
           loss='sparse_categorical_crossentropy',
           metrics=c('accuracy'))
 
 
-newCNN %>% fit(training_x,training_y, epochs = 100)
-newCNN %>% evaluate(test_x,test_y)
+newCNN %>% fit(training_x,training_y, epochs = 75)
+testCNN %>% evaluate(test_x,test_y)
 predictions <- predict(newCNN,test_x)
 table(apply(predictions,1,which.max), test_y)
 
-newCNN %>% save_model_tf("../Data/Models/CNN2_90")
+CNN1_85 %>% save_model_hdf5("../Data/Models/CNN2_88")
 
+
+
+##### Verify Model: Fitting new data #####
+#creating predict df, match back to results
+testCNN <- load_model_hdf5("../Data/Models/CNN2_100eq")
+testCNN %>% evaluate(ImageVal,ImageID)
+predictions <- predict(testCNN,ImageVal)
+table(apply(predictions,1,which.max), ImageID)
+
+predictiondf <- data.frame(predictions)
+predictiondf$Predict<- apply(predictions,1,which.max)
+predictiondf$Actual <- ImageID+1
+predictiondf$match <- predictiondf$Predict==predictiondf$Actual
+predictiondf$Frame <- data$Frame
+
+FrameLong <- read.csv(paste("../Data/Frames/",FileName,"/FramesLong.csv", sep=""))
+predictiondf2 <- merge(predictiondf, FrameLong[,names(FrameLong)%in%c("Frame","Event")], by="Frame")
+predictiondf2 <- predictiondf2[!duplicated(predictiondf2$Frame),] # remove duplicates, some frames have multiple rows
+predictiondf2 <- na.omit(predictiondf2) # remove frames that are not part of events
+
+FrameShort <- read.csv(paste("../Data/Frames/",FileName,"/FramesShort.csv", sep=""))
+#preallocate columns:
+FrameShort$PredictSex <- "NA"
+FrameShort$Probability <- "NA"
+FrameShort$ActualSex <- "NA"
+#calculate most probabilities for male/female
+for(i in 1:max(predictiondf2$Event)){
+  sub <- subset(predictiondf2, predictiondf2$Event==i)
+  FemProb <- sum(sub$X1)/nrow(sub)
+  MaleProb <- sum(sub$X2)/nrow(sub)
+  
+  if(isTRUE(FemProb > MaleProb)){
+    #If female probability higher
+    FrameShort$PredictSex[i] <- "F"
+    FrameShort$Probability[i] <- FemProb
+    }else{
+    #if male probability higher
+    FrameShort$PredictSex[i] <- "M"
+    FrameShort$Probability[i] <- MaleProb
+    }
+  
+  #just for now: put actual male/female
+  if(isTRUE(sub$Actual[1]==1)){
+    FrameShort$ActualSex[i] <- "F"
+  }else{
+    FrameShort$ActualSex[i] <- "M"
+  }
+  
+}
+
+#calculate accuracy:
+FrameShort$Match <- FrameShort$PredictSex==FrameShort$ActualSex
+print(paste("Accuracy of", sum(FrameShort$Match)/nrow(FrameShort)))
+write.csv(paste("../Data/Frames/",FileName,"/CNNAccuracy.csv", sep=""))
