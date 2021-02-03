@@ -14,7 +14,7 @@ for(i in 1:nrow(data)){
   image <- image_read(paste("../Data/Frames/",data$FileName[i],"/",Framenum,".jpg", sep=""))
   
   #crop image:
-  cropimage <- image_crop(image,paste(data$w[i],"x",data$h[i],"+",data$x[i],"+",data$y[i], sep=""))
+  cropimage <- image_crop(image,paste(data$w[i]*1.5,"x",data$h[i]*1.5,"+",data$x[i],"+",data$y[i], sep=""))
   
   #add black border around cropped image#
   #get desired height and width:
@@ -38,10 +38,10 @@ for(i in 1:nrow(data)){
   
   finalimage <- image_scale(cropborder, paste(wt,"x",ht,"!",sep=""))
   # browser()
-  # plot(finalimage)
+  plot(finalimage)
   
   #save to array:
   ImageVal[i,,,] <- as.integer(finalimage[[1]])/255
 }
 
-save(ImageVal, file=paste("../Data/",FileName,"_Array.rda", sep=""))
+save(ImageVal, file=paste("../Data/Arrays/",FileName,"_Array.rda", sep=""))
