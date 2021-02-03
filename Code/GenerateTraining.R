@@ -1,13 +1,14 @@
 #Takes long/ short format and compares with excel file to generate training/ verification files
-rm(list=ls())
+# rm(list=ls())
 library(readxl)
 library(DescTools)
 
-FileName <- "VO0006_VP7_LM40_20150501"
-VidCode <- strsplit(FileName, "_")[[1]][1]# code for excel
-Year <- "2015"
+#default: for testing
+# FileName <- "VO0006_VP7_LM40_20150501"
+# VidCode <- strsplit(FileName, "_")[[1]][1]# code for excel
+# Year <- "2015"
 
-#Takes defined short format, matches it with excel and produces a new short and long csv
+#Takes defined short format, matches it with excel and produces a new short and long csv 
 CodefrmExcel <- function(FileName,VidCode,Year){
 Short <- read.csv(paste("../Data/Frames/",FileName,"/FramesShort.csv", sep=""))
 excel <- read_excel(paste("../Data/Excel/DVDs ",Year,"/",VidCode,".xlsx", sep=""))

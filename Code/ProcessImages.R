@@ -1,20 +1,24 @@
 #read in images, crop it and save array
-rm(list=ls())
+# rm(list=ls())
 library(imager)
 library(magick)
 
-FileName <- "VT0139_S1_VP11_20190611"
-data <- read.csv(paste("../Data/Frames/",FileName,"/","FramesLong.csv", sep=""))
+# FileName <- "VT0139_S1_VP11_20190611"
 
+# data <- read.csv(paste("../Data/Frames/",FileName,"/","FramesLongCoded.csv", sep=""))
+# data <- na.omit(data, data$Sex)
+
+
+#reads long format data, crops image, then saves array
+ProcessImage <- function(FileName, data){
 imagescale <- 4
 ImageVal <- array(data=NA, dim=c(nrow(data),1280/imagescale,720/imagescale,3))
 
 for(i in 1:nrow(data)){
   Framenum <- data$Frame[i]
   image <- image_read(paste("../Data/Frames/",data$FileName[i],"/",Framenum,".jpg", sep=""))
-  
   #crop image:
-  cropimage <- image_crop(image,paste(data$w[i]*1.5,"x",data$h[i]*1.5,"+",data$x[i],"+",data$y[i], sep=""))
+  cropimage <- image_crop(image,paste(data$w[i]*1.3,"x",data$h[i]*1.3,"+",data$x[i],"+",data$y[i], sep=""))
   
   #add black border around cropped image#
   #get desired height and width:
@@ -38,10 +42,12 @@ for(i in 1:nrow(data)){
   
   finalimage <- image_scale(cropborder, paste(wt,"x",ht,"!",sep=""))
   # browser()
-  plot(finalimage)
+  #plot(finalimage)
   
   #save to array:
   ImageVal[i,,,] <- as.integer(finalimage[[1]])/255
 }
 
 save(ImageVal, file=paste("../Data/Arrays/",FileName,"_Array.rda", sep=""))
+}
+

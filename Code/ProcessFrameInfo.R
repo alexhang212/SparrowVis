@@ -1,5 +1,5 @@
 # Processes output info of frames from deep meerkat and define it as events
-rm(list=ls())
+# rm(list=ls())
 
 Process_framecsv <- function(FileName){
 #processes raw data from meerkat, outputs long and short format of events
@@ -60,6 +60,6 @@ write.csv(DataShort, file=paste("../Data/Frames/",FileName,"/FramesShort.csv", s
 }
 
 
-#Process file:
-FileName <- "VT0115_S1_VP7_20190607"
-Process_framecsv(FileName)
+#Process file for testing:
+# FileName <- "VT0115_S1_VP7_20190607"
+# Process_framecsv(FileName)
