@@ -3,5 +3,6 @@
 */Excel/*
 *.rda
 */Frames/*
+*/Arrays/*
 
 !.gitkeep
