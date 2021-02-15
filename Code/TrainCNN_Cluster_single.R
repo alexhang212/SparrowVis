@@ -18,11 +18,11 @@ MainArray <- array(data=NA, dim=c(1,320,180,3))
 #read arrays
 for(i in 1:length(ArrayNames)){
   load(ArrayNames[i])
-  MainArray <- abind(ImageVal,MainArray,along=1)
+  MainArray <- abind(MainArray,ImageVal,along=1)
   
 }
 
-MainArray <- MainArray[-dim(MainArray)[1],,,] #Remove final array, it is all NAs from preallocation
+MainArray <- MainArray[-1,,,] #Remove first array, it is all NAs from preallocation
 
 #read ImageIDs
 ImageIDVect <- c()
@@ -54,7 +54,7 @@ CNN %>% layer_conv_2d(filters=30, kernel_size=c(4,4), activation = 'relu',
   layer_flatten() %>%
   layer_dense(units=30, activation = 'relu')%>%
   #layer_dense(units=15, activation='relu')%>%
-  layer_dropout(rate=0.25) %>%
+  #layer_dropout(rate=0.25) %>%
   layer_dense(units=2, activation='softmax')%>%
   compile(
     optimizer='adam',

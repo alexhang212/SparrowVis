@@ -2,12 +2,13 @@
 rm(list=ls())
 library(keras)
 
-FileName <- "VO0018_VP11_LM40_20150505"
+
+FileName <- "VO0189_VP11_ML5_20150621"
 load(paste("../Data/Arrays/",FileName,"_Array.rda",sep=""))
 load(paste("../Data/Arrays/",FileName,"_ImageID.rda",sep=""))
 
 #Load trained CNN model: 
-CNN <- load_model_hdf5("../Data/Arrays/TrainedCNN3")
+CNN <- load_model_hdf5("../Data/Arrays/TrainedCNN_99-10")
 CNN %>% evaluate(ImageVal,ImageID)
 predictions <- predict(CNN, ImageVal)
 
