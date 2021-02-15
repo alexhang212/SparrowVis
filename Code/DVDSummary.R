@@ -1,7 +1,6 @@
 #Compares DVDinfo from database and files I have
 rm(list=ls())
 
-setwd("C:/Documents and Settings/Alex Chan/Documents/SparrowVis/Code/")
 DVDinfo <- read.csv("../Data/DVDInfo.csv")
 DVDSum<- read.csv("../Data/DVDSummary.csv")
 ProvOverview <- read.csv("../Data/ProvisionOverview.csv") #overview of provision/ incubation
@@ -64,7 +63,7 @@ unique(DVDinfoNew$Test) #test passed
 ##Create type of data (incubation6/12, provision 7/11):
 DVDinfoNew$Type <- paste(DVDinfoNew$TypeOfCare,DVDinfoNew$Age)
 unique(DVDinfoNew$Type)
-
+table(DVDinfoNew$Type)
 
 
 #####2. Extracting file names from hard disk and compare#####

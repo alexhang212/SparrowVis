@@ -10,8 +10,7 @@ library(magick)
 
 
 #reads long format data, crops image, then saves array
-ProcessImage <- function(FileName, data){
-imagescale <- 4
+ProcessImage <- function(FileName, data, imagescale=4){
 ImageVal <- array(data=NA, dim=c(nrow(data),1280/imagescale,720/imagescale,3))
 
 for(i in 1:nrow(data)){

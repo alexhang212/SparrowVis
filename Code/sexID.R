@@ -169,3 +169,4 @@ for(i in 1:max(predictiondf2$Event)){
 FrameShort$Match <- FrameShort$PredictSex==FrameShort$ActualSex
 print(paste("Accuracy of", sum(FrameShort$Match)/nrow(FrameShort)))
 write.csv(paste("../Data/Frames/",FileName,"/CNNAccuracy.csv", sep=""))
+

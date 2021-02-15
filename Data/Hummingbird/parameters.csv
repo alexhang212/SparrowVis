@@ -1,0 +1,24 @@
+input,Hummingbird.avi
+draw_size,enter
+size,0.01
+tensorflow_threshold,0.95
+moglearning,0.1
+mogvariance,20
+crop,False
+draw_box,False
+show,False
+threaded,False
+tensorflow,True
+write_text,False
+training,False
+output_video,False
+resize,False
+path_to_model,model/
+output,/home/alex2/Documents/SparrowVis/Data/
+path_to_ffmpeg,/Applications/DeepMeerkat.app/Contents/Resources/ffmpeg
+video,Hummingbird.avi
+Minutes,0.07146812677383423
+Total Frames,66
+Motion Events,5
+Return rate,0.07575757575757576
+Frame processing rate,15.39
