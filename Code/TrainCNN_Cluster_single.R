@@ -64,10 +64,14 @@ CNN %>% layer_conv_2d(filters=30, kernel_size=c(4,4), activation = 'relu',
 
 
 #fitting the model: with augmentation:
-for(i in 1:100){
-Augmented <- MainArray + rnorm(length(MainArray), sd=0.1)
-CNN %>% fit(Augmented,ImageIDVect, epochs = 1)
-}
+# for(i in 1:100){
+# print(paste("epoch:",i))
+# Augmented <- MainArray + rnorm(length(MainArray), sd=0.01)
+# CNN %>% fit(Augmented,ImageIDVect, epochs = 1)
+# }
+
+#fitting Model: without augmentation
+CNN %>% fit(MainArray,ImageIDVect, epochs = 100)
 
 ##
 

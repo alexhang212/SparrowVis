@@ -1,4 +1,4 @@
-"","DVDNumber","ï..FocalID","PartnerID","Year","DayOfYear","TypeOfCare","BroodName","DVDRef.x","DVDRef.y","TapeLength","Protocol","Observer","BroodRef","Situation","Deaths","OffspringNo","Age","Wrong","DVDdate","DVDtime","Weather","Wind","Notes"
+"","DVDNumber","FocalID","PartnerID","Year","DayOfYear","TypeOfCare","BroodName","DVDRef.x","DVDRef.y","TapeLength","Protocol","Observer","BroodRef","Situation","Deaths","OffspringNo","Age","Wrong","DVDdate","DVDtime","Weather","Wind","Notes"
 "1","40001",4290,4275,2004,116,"Prov","D004",1,1,92.59999847,1,"",442,4,FALSE,2,13,FALSE,"25/4/2004","0/1/1900",NA,NA,"plus LM19"
 "2","40001LM19",471,661,2004,116,"Prov","D005",5147,5147,93.69999695,1,"",443,4,FALSE,1,13,FALSE,"25/4/2004","0/1/1900",NA,NA,"Created from DVDInfo for 40001 - 2 broods were videoed and 2 excels created. Isabel Winney 20160225"
 "3","40002",4424,590,2004,116,"Prov","D003",2,2,83.90000153,NA,"",441,4,FALSE,2,13,TRUE,"25/4/2004","0/1/1900",NA,NA,""

@@ -69,7 +69,6 @@ table(DVDinfoNew$Type)
 #####2. Extracting file names from hard disk and compare#####
 rm(list=ls())
 library(stringi)
-setwd("C:/Documents and Settings/Alex Chan/Documents/SparrowVis/Code/")
 DVDinfoNew <- read.csv("../Data/DVDinfo_Updated.csv")
 
 #reading in all the files available in hard disk, compare with database 
@@ -128,3 +127,9 @@ table(Prov2015$In_Hard_Disk)
 Inc2016 <- subset(Data2015,Data2015$TypeOfCare=="Inc")
 table(Inc2016$In_Hard_Disk)
 
+#Check 2014:
+Data2014 <- Yearsublist$`2014`
+Prov2014 <- subset(Data2014,Data2014$TypeOfCare=="Prov")
+table(Prov2014$In_Hard_Disk)
+Inc2014 <- subset(Data2014,Data2014$TypeOfCare=="Inc")
+table(Inc2014$In_Hard_Disk)

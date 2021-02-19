@@ -8,10 +8,10 @@ import pandas
 
 #gets all file names from hard disk:
 FileName = []
-for root, dirs, files in os.walk("/media/alex2/Elements", topdown=False):
+for root, dirs, files in os.walk("/media/alex2/ElementsMount", topdown=False):
     FileName += files
 
 #saving to csv:
 df = pandas.DataFrame(data={"Files": FileName})
-df.to_csv("../Data/HardDiskFile.csv", sep=',',index=False)
+df.to_csv("Documents/SparrowVis/Data/HardDiskFile.csv", sep=',',index=False)
 

@@ -1,14 +1,16 @@
 #Load a trained CNN, input 1 file, determine accuracy
 rm(list=ls())
 library(keras)
+install_keras()
 
+Args <- commandArgs(trailingOnly = TRUE)
 
-FileName <- "VO0018_VP11_LM40_20150505"
-load(paste("../Data/Arrays/",FileName,"_Array.rda",sep=""))
-load(paste("../Data/Arrays/",FileName,"_ImageID.rda",sep=""))
+FileName <- Args[1]
+load(paste("../Arrays/",FileName,"_Array.rda",sep=""))
+load(paste("../Arrays/",FileName,"_ImageID.rda",sep=""))
 
 #Load trained CNN model: 
-CNN <- load_model_hdf5("../Data/Arrays/TrainedCNN100-10")
+CNN <- load_model_hdf5("../Models/TrainedCNN100-10")
 CNN %>% evaluate(ImageVal,ImageID)
 predictions <- predict(CNN, ImageVal)
 
@@ -21,16 +23,16 @@ predictiondf$Predict<- apply(predictions,1,which.max)
 predictiondf$Actual <- ImageID+1
 predictiondf$match <- predictiondf$Predict==predictiondf$Actual
 
-FrameLongCoded <- read.csv(paste("../Data/Frames/",FileName,"/FramesLongCoded.csv", sep=""))
+FrameLongCoded <- read.csv(paste("../MeerkatOutput/",FileName,"/FramesLongCoded.csv", sep=""))
 FrameLongCoded <- na.omit(FrameLongCoded,FrameLongCoded$Sex)
 predictiondf$Frame <- FrameLongCoded$Frame
 
 CombinedData <- cbind(FrameLongCoded, predictiondf) #Combine predictions with long coded df
 #quick tests:
-sum((CombinedData$Sex+1)==CombinedData$Actual)==nrow(CombinedData) # sex matches up
+print(sum((CombinedData$Sex+1)==CombinedData$Actual)==nrow(CombinedData)) # sex matches up
 
 ## Match with short:
-FrameShort <- read.csv(paste("../Data/Frames/",FileName,"/FramesShort.csv", sep=""))
+FrameShort <- read.csv(paste("../MeerkatOutput/",FileName,"/FramesShort.csv", sep=""))
 #preallocate columns:
 FrameShort$PredictSex <- "NA"
 FrameShort$Probability <- "NA"
@@ -64,3 +66,25 @@ for(i in 1:length(UnqEvents)){
 FrameShort <-FrameShort[!FrameShort$PredictSex=="NA",]
 FrameShort$Match <- FrameShort$PredictSex==FrameShort$ActualSex
 print(paste("Accuracy of", sum(FrameShort$Match)/nrow(FrameShort)))
+
+#Saving accuracies into csv:
+OverallAccuracy <- sum(predictiondf$match)/nrow(predictiondf)
+EventAccuracy <- sum(FrameShort$Match)/nrow(FrameShort)
+
+Accuracies <- data.frame(FileName=FileName, FrameAccuracy = OverallAccuracy, EventAccuracy = EventAccuracy)
+
+SumAccuracydf <- read.csv("../Models/ModelAccuracy.csv")
+#subset to work around R adding column X:
+SumAccuracydf <-SumAccuracydf[names(SumAccuracydf) %in% c("FileName","FrameAccuracy","EventAccuracy")]
+
+if(SumAccuracydf$FileName %in% FileName){
+  #If this file already exists in the dataframe
+  SumAccuracydf[SumAccuracydf$FileName==FileName,] <- Accuracies[1,]
+}else{
+  #File havent been evaluated before
+  SumAccuracydf <- rbind(SumAccuracydf,Accuracies)
+}
+
+write.csv(SumAccuracydf, file="../Models/ModelAccuracy.csv")
+
+
