@@ -1,0 +1,78 @@
+WARNING:tensorflow:From /rds/general/user/hhc4317/home/SparrowVis/DeepMeerkat/DeepMeerkat/Meerkat.py:9: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+WARNING:tensorflow:From /rds/general/user/hhc4317/home/SparrowVis/DeepMeerkat/DeepMeerkat/Meerkat.py:9: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-02-21 16:43:20.938766: I tensorflow/core/platform/cpu_feature_guard.cc:145] This TensorFlow binary is optimized with Intel(R) MKL-DNN to use the following CPU instructions in performance critical operations:  SSE4.1 SSE4.2 AVX
+To enable them in non-MKL-DNN operations, rebuild TensorFlow with the appropriate compiler flags.
+2021-02-21 16:43:20.987369: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2199955000 Hz
+2021-02-21 16:43:20.989682: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55d083b38680 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-02-21 16:43:20.989717: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+OMP: Info #154: KMP_AFFINITY: Initial OS proc set respected: 0-39
+OMP: Info #214: KMP_AFFINITY: decoding x2APIC ids.
+OMP: Info #156: KMP_AFFINITY: 40 available OS procs
+OMP: Info #157: KMP_AFFINITY: Uniform topology
+OMP: Info #285: KMP_AFFINITY: topology layer "LL cache" is equivalent to "socket".
+OMP: Info #285: KMP_AFFINITY: topology layer "L3 cache" is equivalent to "socket".
+OMP: Info #285: KMP_AFFINITY: topology layer "L2 cache" is equivalent to "core".
+OMP: Info #285: KMP_AFFINITY: topology layer "L1 cache" is equivalent to "core".
+OMP: Info #191: KMP_AFFINITY: 2 sockets x 10 cores/socket x 2 threads/core (20 total cores)
+OMP: Info #216: KMP_AFFINITY: OS proc to physical thread map:
+OMP: Info #171: KMP_AFFINITY: OS proc 0 maps to socket 0 core 0 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 20 maps to socket 0 core 0 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 1 maps to socket 0 core 1 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 21 maps to socket 0 core 1 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 2 maps to socket 0 core 2 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 22 maps to socket 0 core 2 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 3 maps to socket 0 core 3 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 23 maps to socket 0 core 3 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 4 maps to socket 0 core 4 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 24 maps to socket 0 core 4 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 5 maps to socket 0 core 8 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 25 maps to socket 0 core 8 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 6 maps to socket 0 core 9 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 26 maps to socket 0 core 9 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 7 maps to socket 0 core 10 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 27 maps to socket 0 core 10 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 8 maps to socket 0 core 11 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 28 maps to socket 0 core 11 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 9 maps to socket 0 core 12 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 29 maps to socket 0 core 12 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 10 maps to socket 1 core 0 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 30 maps to socket 1 core 0 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 11 maps to socket 1 core 1 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 31 maps to socket 1 core 1 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 12 maps to socket 1 core 2 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 32 maps to socket 1 core 2 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 13 maps to socket 1 core 3 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 33 maps to socket 1 core 3 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 14 maps to socket 1 core 4 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 34 maps to socket 1 core 4 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 15 maps to socket 1 core 8 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 35 maps to socket 1 core 8 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 16 maps to socket 1 core 9 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 36 maps to socket 1 core 9 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 17 maps to socket 1 core 10 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 37 maps to socket 1 core 10 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 18 maps to socket 1 core 11 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 38 maps to socket 1 core 11 thread 1 
+OMP: Info #171: KMP_AFFINITY: OS proc 19 maps to socket 1 core 12 thread 0 
+OMP: Info #171: KMP_AFFINITY: OS proc 39 maps to socket 1 core 12 thread 1 
+OMP: Info #252: KMP_AFFINITY: pid 805687 tid 805687 thread 0 bound to OS proc set 0
+2021-02-21 16:43:20.998529: I tensorflow/core/common_runtime/process_util.cc:115] Creating new thread pool with default inter op setting: 2. Tune using inter_op_parallelism_threads for best performance.
+WARNING:tensorflow:From /rds/general/user/hhc4317/home/SparrowVis/DeepMeerkat/DeepMeerkat/Meerkat.py:10: The name tf.saved_model.tag_constants.SERVING is deprecated. Please use tf.saved_model.SERVING instead.
+
+WARNING:tensorflow:From /rds/general/user/hhc4317/home/SparrowVis/DeepMeerkat/DeepMeerkat/Meerkat.py:10: The name tf.saved_model.tag_constants.SERVING is deprecated. Please use tf.saved_model.SERVING instead.
+
+WARNING:tensorflow:From /rds/general/user/hhc4317/home/SparrowVis/DeepMeerkat/DeepMeerkat/Meerkat.py:10: load (from tensorflow.python.saved_model.loader_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+This function will only be available through the v1 compatibility library as tf.compat.v1.saved_model.loader.load or tf.compat.v1.saved_model.load. There will be a new function for importing SavedModels in Tensorflow 2.0.
+WARNING:tensorflow:From /rds/general/user/hhc4317/home/SparrowVis/DeepMeerkat/DeepMeerkat/Meerkat.py:10: load (from tensorflow.python.saved_model.loader_impl) is deprecated and will be removed in a future version.
+Instructions for updating:
+This function will only be available through the v1 compatibility library as tf.compat.v1.saved_model.loader.load or tf.compat.v1.saved_model.load. There will be a new function for importing SavedModels in Tensorflow 2.0.
+WARNING:tensorflow:The saved meta_graph is possibly from an older release:
+'model_variables' collection should be of type 'byte_list', but instead is of type 'node_list'.
+WARNING:tensorflow:The saved meta_graph is possibly from an older release:
+'model_variables' collection should be of type 'byte_list', but instead is of type 'node_list'.
+OMP: Info #252: KMP_AFFINITY: pid 805687 tid 805776 thread 1 bound to OS proc set 1
+OMP: Info #252: KMP_AFFINITY: pid 805687 tid 805775 thread 2 bound to OS proc set 2
+=>> PBS: job killed: walltime 7216 exceeded limit 7200
