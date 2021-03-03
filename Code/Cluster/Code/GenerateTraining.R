@@ -1,5 +1,5 @@
 #Takes long/ short format and compares with excel file to generate training/ verification files
-# rm(list=ls())
+#rm(list=ls())
 library(readxl)
 library(DescTools)
 
@@ -91,13 +91,24 @@ CodefrmExcelNew <- function(FileName,VidCode,Year){
   FemValA <- FemArd$MeanTime
   MalValA <- MalArd$MeanTime
   
+  #Figuring out when bird is feeding from outside ('OF')
+  FemOF <- subset(excel,excel$Fstate=="OF")
+  MalOF <- subset(excel, excel$Mstate=="OF")
+  FemOF$MeanTime <- (FemOF$Fstart+FemOF$Fend)/2
+  MalOF$MeanTime <- (MalOF$Mstart+MalOF$Mend)/2
+  
+  FemValOF <- FemOF$MeanTime
+  MalValOF <- MalOF$MeanTime
+  
+  
   #combine into dataframe for matching:
-  mergedf <- data.frame(Time=c(FemValIn,FemValOut,FemValA,MalValIn,MalValOut,MalValA), 
-                        Sex=c(rep(0,length(FemValIn)+length(FemValOut)+length(FemValA)), 
-                              rep(1,length(MalValIn)+length(MalValOut)+length(MalValA))),
+  mergedf <- data.frame(Time=c(FemValIn,FemValOut,FemValA,FemValOF,MalValIn,MalValOut,MalValA,MalValOF), 
+                        Sex=c(rep(0,length(FemValIn)+length(FemValOut)+length(FemValA)+length(FemValOF)), 
+                              rep(1,length(MalValIn)+length(MalValOut)+length(MalValA)+length(MalValOF))),
                         EventDes=c(rep("In",length(FemValIn)), rep("Out", length(FemValOut)),
-                                   rep("Around", length(FemValA)),rep("In",length(MalValIn)), 
-                                   rep("Out",length(MalValOut)), rep("Around", length(MalValA))))
+                                   rep("Around", length(FemValA)),rep("OutsideFeeding", length(FemValOF)),
+                                   rep("In",length(MalValIn)), rep("Out",length(MalValOut)), 
+                                   rep("Around", length(MalValA)),rep("OutsideFeeding",length(MalValOF))))
   
   Short$Time <- NA
   Short$Sex <- NA
@@ -128,7 +139,7 @@ CodefrmExcelNew <- function(FileName,VidCode,Year){
   
   ShortMerge <- Short[,names(Short) %in% c("Event","Sex","EventDes")]
   if(sum(duplicated(ShortMerge$Event))>0){ #newly added, avoid cases where there is no duplicates
-  #if there are duplicates
+    #if there are duplicates
     ShortMerge <- ShortMerge[-which(duplicated(ShortMerge$Event)),]
   }else{
     #if there are no duplicates, do nothing

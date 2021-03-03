@@ -1,16 +1,13 @@
 #Load a trained CNN, input 1 file, determine accuracy
-rm(list=ls())
-library(keras)
-install_keras()
+# rm(list=ls())
 
-Args <- commandArgs(trailingOnly = TRUE)
-
-FileName <- Args[1]
+ValidateModel <- function(FileName,Model){
+  
 load(paste("../Arrays/",FileName,"_Array.rda",sep=""))
 load(paste("../Arrays/",FileName,"_ImageID.rda",sep=""))
 
 #Load trained CNN model: 
-CNN <- load_model_hdf5("../Models/TrainedCNN100-10")
+CNN <- load_model_hdf5(paste("../Models/",Model,sep=""))
 CNN %>% evaluate(ImageVal,ImageID)
 predictions <- predict(CNN, ImageVal)
 
@@ -73,11 +70,11 @@ EventAccuracy <- sum(FrameShort$Match)/nrow(FrameShort)
 
 Accuracies <- data.frame(FileName=FileName, FrameAccuracy = OverallAccuracy, EventAccuracy = EventAccuracy)
 
-SumAccuracydf <- read.csv("../Models/ModelAccuracy.csv")
+SumAccuracydf <- read.csv(paste("../Models/ModelAccuracy-",Model,".csv",sep=""))
 #subset to work around R adding column X:
 SumAccuracydf <-SumAccuracydf[names(SumAccuracydf) %in% c("FileName","FrameAccuracy","EventAccuracy")]
-
-if(SumAccuracydf$FileName %in% FileName){
+#browser()
+if(any(SumAccuracydf$FileName== FileName)){
   #If this file already exists in the dataframe
   SumAccuracydf[SumAccuracydf$FileName==FileName,] <- Accuracies[1,]
 }else{
@@ -85,6 +82,12 @@ if(SumAccuracydf$FileName %in% FileName){
   SumAccuracydf <- rbind(SumAccuracydf,Accuracies)
 }
 
-write.csv(SumAccuracydf, file="../Models/ModelAccuracy.csv")
+write.csv(SumAccuracydf, file=paste("../Models/ModelAccuracy-",Model,".csv",sep=""))
+
+}
 
 
+#For Tests:
+#FileName <- "VO0006_VP7_LM40_20150501"
+#Model <- "TrainedCNN100-10"
+#ValidateModel(FileName, Model)

@@ -65,9 +65,9 @@ write.csv(NewLong, file=paste("../Data/Frames/",FileName,"/FramesLongCoded.csv",
 }
 
 #for testing:
-FileName <- "VO0149_VP7_F15_20150613"
-VidCode <- strsplit(FileName, "_")[[1]][1]# code for excel
-Year <- "2015"
+# FileName <- "VO0157_VP11_MM1_20150615"
+# VidCode <- strsplit(FileName, "_")[[1]][1]# code for excel
+# Year <- "2015"
 
 CodefrmExcelNew <- function(FileName,VidCode,Year){
   Short <- read.csv(paste("../Data/Frames/",FileName,"/FramesShort.csv", sep=""))
@@ -91,13 +91,24 @@ CodefrmExcelNew <- function(FileName,VidCode,Year){
   FemValA <- FemArd$MeanTime
   MalValA <- MalArd$MeanTime
   
+  #Figuring out when bird is feeding from outside ('OF')
+  FemOF <- subset(excel,excel$Fstate=="OF")
+  MalOF <- subset(excel, excel$Mstate=="OF")
+  FemOF$MeanTime <- (FemOF$Fstart+FemOF$Fend)/2
+  MalOF$MeanTime <- (MalOF$Mstart+MalOF$Mend)/2
+  
+  FemValOF <- FemOF$MeanTime
+  MalValOF <- MalOF$MeanTime
+  
+  
   #combine into dataframe for matching:
-  mergedf <- data.frame(Time=c(FemValIn,FemValOut,FemValA,MalValIn,MalValOut,MalValA), 
-                        Sex=c(rep(0,length(FemValIn)+length(FemValOut)+length(FemValA)), 
-                              rep(1,length(MalValIn)+length(MalValOut)+length(MalValA))),
+  mergedf <- data.frame(Time=c(FemValIn,FemValOut,FemValA,FemValOF,MalValIn,MalValOut,MalValA,MalValOF), 
+                        Sex=c(rep(0,length(FemValIn)+length(FemValOut)+length(FemValA)+length(FemValOF)), 
+                              rep(1,length(MalValIn)+length(MalValOut)+length(MalValA)+length(MalValOF))),
                         EventDes=c(rep("In",length(FemValIn)), rep("Out", length(FemValOut)),
-                                   rep("Around", length(FemValA)),rep("In",length(MalValIn)), 
-                                   rep("Out",length(MalValOut)), rep("Around", length(MalValA))))
+                                   rep("Around", length(FemValA)),rep("OutsideFeeding", length(FemValOF)),
+                                   rep("In",length(MalValIn)), rep("Out",length(MalValOut)), 
+                                   rep("Around", length(MalValA)),rep("OutsideFeeding",length(MalValOF))))
   
   Short$Time <- NA
   Short$Sex <- NA

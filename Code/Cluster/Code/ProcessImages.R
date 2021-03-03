@@ -1,6 +1,6 @@
 #read in images, crop it and save array
 # rm(list=ls())
-library(imager)
+#library(imager)
 library(magick)
 
 # FileName <- "VT0139_S1_VP11_20190611"
