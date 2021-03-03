@@ -13,5 +13,7 @@ Excel/
 DeepMeerkat/
 TrainedCNN*
 ClusterResults/
+MeerkatOutput/
+MeerkatInput/
 
 !.gitkeep
